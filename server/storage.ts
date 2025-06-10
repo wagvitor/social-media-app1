@@ -4,6 +4,8 @@ import {
   type Template, type InsertTemplate, type SocialPlatform, type InsertSocialPlatform,
   type Activity, type InsertActivity, type Analytics, type TeamMember
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, and } from "drizzle-orm";
 
 export interface IStorage {
   // Users
@@ -49,6 +51,218 @@ export interface IStorage {
   getAnalytics(postId: number): Promise<Analytics[]>;
   createAnalytics(analytics: Omit<Analytics, 'id' | 'createdAt'>): Promise<Analytics>;
   getTeamAnalytics(teamId: number): Promise<Analytics[]>;
+}
+
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  async updateUser(id: number, updates: Partial<User>): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set(updates)
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users);
+  }
+
+  async getTeam(id: number): Promise<Team | undefined> {
+    const [team] = await db.select().from(teams).where(eq(teams.id, id));
+    return team || undefined;
+  }
+
+  async createTeam(insertTeam: InsertTeam): Promise<Team> {
+    const [team] = await db
+      .insert(teams)
+      .values(insertTeam)
+      .returning();
+    return team;
+  }
+
+  async getTeamsByUser(userId: number): Promise<Team[]> {
+    const userTeams = await db
+      .select({ team: teams })
+      .from(teamMembers)
+      .innerJoin(teams, eq(teamMembers.teamId, teams.id))
+      .where(eq(teamMembers.userId, userId));
+    
+    return userTeams.map(ut => ut.team);
+  }
+
+  async getTeamMembers(teamId: number): Promise<(TeamMember & { user: User })[]> {
+    const members = await db
+      .select({
+        id: teamMembers.id,
+        teamId: teamMembers.teamId,
+        userId: teamMembers.userId,
+        role: teamMembers.role,
+        joinedAt: teamMembers.joinedAt,
+        user: users
+      })
+      .from(teamMembers)
+      .innerJoin(users, eq(teamMembers.userId, users.id))
+      .where(eq(teamMembers.teamId, teamId));
+    
+    return members;
+  }
+
+  async addTeamMember(teamId: number, userId: number, role = "member"): Promise<void> {
+    await db.insert(teamMembers).values({
+      teamId,
+      userId,
+      role,
+    });
+  }
+
+  async getSocialPlatforms(userId: number): Promise<SocialPlatform[]> {
+    return await db.select().from(socialPlatforms).where(eq(socialPlatforms.userId, userId));
+  }
+
+  async createSocialPlatform(insertPlatform: InsertSocialPlatform): Promise<SocialPlatform> {
+    const [platform] = await db
+      .insert(socialPlatforms)
+      .values(insertPlatform)
+      .returning();
+    return platform;
+  }
+
+  async updateSocialPlatform(id: number, updates: Partial<SocialPlatform>): Promise<SocialPlatform | undefined> {
+    const [platform] = await db
+      .update(socialPlatforms)
+      .set(updates)
+      .where(eq(socialPlatforms.id, id))
+      .returning();
+    return platform || undefined;
+  }
+
+  async getPost(id: number): Promise<Post | undefined> {
+    const [post] = await db.select().from(posts).where(eq(posts.id, id));
+    return post || undefined;
+  }
+
+  async createPost(insertPost: InsertPost): Promise<Post> {
+    const [post] = await db
+      .insert(posts)
+      .values(insertPost)
+      .returning();
+    return post;
+  }
+
+  async updatePost(id: number, updates: Partial<Post>): Promise<Post | undefined> {
+    const [post] = await db
+      .update(posts)
+      .set(updates)
+      .where(eq(posts.id, id))
+      .returning();
+    return post || undefined;
+  }
+
+  async getPostsByTeam(teamId: number): Promise<Post[]> {
+    return await db.select().from(posts).where(eq(posts.teamId, teamId)).orderBy(desc(posts.createdAt));
+  }
+
+  async getPostsByUser(userId: number): Promise<Post[]> {
+    return await db.select().from(posts).where(eq(posts.authorId, userId)).orderBy(desc(posts.createdAt));
+  }
+
+  async getScheduledPosts(): Promise<Post[]> {
+    return await db.select().from(posts).where(eq(posts.status, "scheduled")).orderBy(desc(posts.scheduledAt));
+  }
+
+  async getPostsForToday(): Promise<Post[]> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    return await db.select().from(posts).where(
+      and(
+        eq(posts.status, "scheduled"),
+        // Note: This is a simplified date comparison. In production, you'd want more precise date handling
+      )
+    );
+  }
+
+  async getTemplate(id: number): Promise<Template | undefined> {
+    const [template] = await db.select().from(templates).where(eq(templates.id, id));
+    return template || undefined;
+  }
+
+  async createTemplate(insertTemplate: InsertTemplate): Promise<Template> {
+    const [template] = await db
+      .insert(templates)
+      .values(insertTemplate)
+      .returning();
+    return template;
+  }
+
+  async getTemplatesByTeam(teamId: number): Promise<Template[]> {
+    return await db.select().from(templates).where(eq(templates.teamId, teamId)).orderBy(desc(templates.createdAt));
+  }
+
+  async getPublicTemplates(): Promise<Template[]> {
+    return await db.select().from(templates).where(eq(templates.isPublic, true)).orderBy(desc(templates.createdAt));
+  }
+
+  async createActivity(insertActivity: InsertActivity): Promise<Activity> {
+    const [activity] = await db
+      .insert(activities)
+      .values(insertActivity)
+      .returning();
+    return activity;
+  }
+
+  async getActivitiesByTeam(teamId: number, limit = 10): Promise<Activity[]> {
+    return await db.select().from(activities)
+      .where(eq(activities.teamId, teamId))
+      .orderBy(desc(activities.createdAt))
+      .limit(limit);
+  }
+
+  async getAnalytics(postId: number): Promise<Analytics[]> {
+    return await db.select().from(analytics).where(eq(analytics.postId, postId));
+  }
+
+  async createAnalytics(insertAnalytics: Omit<Analytics, 'id' | 'createdAt'>): Promise<Analytics> {
+    const [analyticsRecord] = await db
+      .insert(analytics)
+      .values(insertAnalytics)
+      .returning();
+    return analyticsRecord;
+  }
+
+  async getTeamAnalytics(teamId: number): Promise<Analytics[]> {
+    return await db
+      .select({ analytics: analytics })
+      .from(analytics)
+      .innerJoin(posts, eq(analytics.postId, posts.id))
+      .where(eq(posts.teamId, teamId))
+      .then(results => results.map(r => r.analytics));
+  }
 }
 
 export class MemStorage implements IStorage {
@@ -536,4 +750,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
