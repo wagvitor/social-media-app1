@@ -194,7 +194,7 @@ export class MemStorage implements IStorage {
           "pt-BR": "A dica desta semana foca em manter a produtividade da equipe trabalhando de forma distribuída. 💼 #TrabalhoRemoto #GestãoDeEquipe"
         },
         media: null,
-        platforms: ["facebook", "instagram"],
+        platforms: ["tiktok", "pinterest"],
         authorId: 3,
         teamId: 1,
         status: "scheduled",
@@ -247,6 +247,45 @@ export class MemStorage implements IStorage {
     sampleActivities.forEach(activity => {
       this.activities.set(activity.id, activity);
       this.currentId.activities = Math.max(this.currentId.activities, activity.id + 1);
+    });
+
+    // Create sample templates with multilingual content
+    const sampleTemplates = [
+      {
+        id: 1,
+        name: "Product Launch Announcement",
+        description: "Template for announcing new product launches",
+        content: {
+          en: "🚀 Exciting news! We're launching [PRODUCT_NAME] - a game-changer for [INDUSTRY]. Get ready to revolutionize your workflow! #ProductLaunch #Innovation",
+          es: "🚀 ¡Noticias emocionantes! Estamos lanzando [PRODUCT_NAME] - un cambio revolucionario para [INDUSTRY]. ¡Prepárate para revolucionar tu flujo de trabajo! #LanzamientoProducto #Innovación",
+          "pt-BR": "🚀 Novidades empolgantes! Estamos lançando [PRODUCT_NAME] - uma revolução para [INDUSTRY]. Prepare-se para revolucionar seu fluxo de trabalho! #LançamentoProduto #Inovação"
+        },
+        category: "product",
+        authorId: 1,
+        teamId: 1,
+        isPublic: true,
+        createdAt: new Date(),
+      },
+      {
+        id: 2,
+        name: "Weekly Team Update",
+        description: "Template for sharing weekly team progress",
+        content: {
+          en: "📊 Weekly Update: Our team accomplished [ACHIEVEMENTS] this week. Next week we're focusing on [GOALS]. #TeamWork #Progress",
+          fr: "📊 Mise à jour hebdomadaire : Notre équipe a accompli [ACHIEVEMENTS] cette semaine. La semaine prochaine, nous nous concentrons sur [GOALS]. #TravailEquipe #Progrès",
+          "pt-BR": "📊 Atualização Semanal: Nossa equipe conquistou [ACHIEVEMENTS] esta semana. Na próxima semana vamos focar em [GOALS]. #TrabalhoEmEquipe #Progresso"
+        },
+        category: "social",
+        authorId: 2,
+        teamId: 1,
+        isPublic: false,
+        createdAt: new Date(),
+      }
+    ];
+
+    sampleTemplates.forEach(template => {
+      this.templates.set(template.id, template);
+      this.currentId.templates = Math.max(this.currentId.templates, template.id + 1);
     });
   }
 
