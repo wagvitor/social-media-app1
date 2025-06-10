@@ -148,6 +148,8 @@ export class MemStorage implements IStorage {
       { id: 2, name: "facebook", displayName: "Facebook", icon: "fab fa-facebook", isConnected: true, userId: 1, credentials: {}, createdAt: new Date() },
       { id: 3, name: "linkedin", displayName: "LinkedIn", icon: "fab fa-linkedin", isConnected: true, userId: 1, credentials: {}, createdAt: new Date() },
       { id: 4, name: "instagram", displayName: "Instagram", icon: "fab fa-instagram", isConnected: false, userId: 1, credentials: {}, createdAt: new Date() },
+      { id: 5, name: "tiktok", displayName: "TikTok", icon: "fab fa-tiktok", isConnected: true, userId: 1, credentials: {}, createdAt: new Date() },
+      { id: 6, name: "pinterest", displayName: "Pinterest", icon: "fab fa-pinterest", isConnected: false, userId: 1, credentials: {}, createdAt: new Date() },
     ];
 
     samplePlatforms.forEach(platform => {
@@ -166,7 +168,8 @@ export class MemStorage implements IStorage {
         title: "New Product Launch Announcement",
         content: {
           en: "Excited to announce our latest product that will revolutionize remote work! 🚀 #RemoteWork #Innovation",
-          es: "¡Emocionados de anunciar nuestro último producto que revolucionará el trabajo remoto! 🚀 #TrabajoRemoto #Innovación"
+          es: "¡Emocionados de anunciar nuestro último producto que revolucionará el trabajo remoto! 🚀 #TrabajoRemoto #Innovación",
+          "pt-BR": "Empolgados em anunciar nosso novo produto que vai revolucionar o trabalho remoto! 🚀 #TrabalhoRemoto #Inovação"
         },
         media: null,
         platforms: ["twitter", "linkedin"],
@@ -187,7 +190,8 @@ export class MemStorage implements IStorage {
         content: {
           en: "This week's tip focuses on maintaining team productivity while working distributed. 💼 #RemoteWork #TeamManagement",
           fr: "Le conseil de cette semaine se concentre sur le maintien de la productivité de l'équipe en travaillant de manière distribuée. 💼 #TravailDistance #GestionEquipe",
-          de: "Der Tipp dieser Woche konzentriert sich darauf, die Teamproduktivität bei verteilter Arbeit aufrechtzuerhalten. 💼 #RemoteArbeit #TeamManagement"
+          de: "Der Tipp dieser Woche konzentriert sich darauf, die Teamproduktivität bei verteilter Arbeit aufrechtzuerhalten. 💼 #RemoteArbeit #TeamManagement",
+          "pt-BR": "A dica desta semana foca em manter a produtividade da equipe trabalhando de forma distribuída. 💼 #TrabalhoRemoto #GestãoDeEquipe"
         },
         media: null,
         platforms: ["facebook", "instagram"],

@@ -140,6 +140,8 @@ export function CreatePostModal({ open, onOpenChange }: CreatePostModalProps) {
   const getCharacterLimit = () => {
     const selectedPlatforms = form.getValues("platforms");
     if (selectedPlatforms.includes("twitter")) return 280;
+    if (selectedPlatforms.includes("tiktok")) return 150;
+    if (selectedPlatforms.includes("pinterest")) return 500;
     return 2000;
   };
 
@@ -313,6 +315,44 @@ export function CreatePostModal({ open, onOpenChange }: CreatePostModalProps) {
                           <p className="text-sm mt-1">
                             {form.getValues("content")[activeLanguage] || "Your content will appear here..."}
                           </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {form.getValues("platforms").includes("tiktok") && (
+                    <div className="border border-gray-200 rounded-lg p-4 bg-black text-white">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                          <i className="fab fa-tiktok text-black text-sm"></i>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <span className="font-medium text-sm">@yourcompany</span>
+                            <span className="text-gray-300 text-xs">• Following</span>
+                          </div>
+                          <p className="text-sm mt-1">
+                            {form.getValues("content")[activeLanguage] || "Your content will appear here..."}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {form.getValues("platforms").includes("pinterest") && (
+                    <div className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
+                          <i className="fab fa-pinterest text-white text-sm"></i>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <span className="font-medium text-sm">Your Company</span>
+                          </div>
+                          <p className="text-sm mt-1">
+                            {form.getValues("content")[activeLanguage] || "Your content will appear here..."}
+                          </p>
+                          <div className="mt-2 text-xs text-gray-500">📌 Pin to board</div>
                         </div>
                       </div>
                     </div>

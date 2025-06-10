@@ -311,6 +311,68 @@ const resources = {
       error: 'エラー',
       success: '成功',
     }
+  },
+  'pt-BR': {
+    translation: {
+      // Navigation
+      dashboard: 'Painel',
+      createContent: 'Criar Conteúdo',
+      schedule: 'Agenda',
+      analytics: 'Análises',
+      contentLibrary: 'Biblioteca de Conteúdo',
+      team: 'Equipe',
+      
+      // Dashboard
+      scheduledPosts: 'Posts Agendados',
+      publishedToday: 'Publicados Hoje',
+      totalReach: 'Alcance Total',
+      teamMembers: 'Membros da Equipe',
+      recentActivity: 'Atividade Recente',
+      todaysSchedule: 'Agenda de Hoje',
+      quickActions: 'Ações Rápidas',
+      connectedPlatforms: 'Plataformas Conectadas',
+      teamPerformance: 'Desempenho da Equipe',
+      
+      // Actions
+      createPost: 'Criar Post',
+      bulkSchedule: 'Agendamento em Massa',
+      useTemplate: 'Usar Modelo',
+      viewAnalytics: 'Ver Análises',
+      addPlatform: 'Adicionar Plataforma',
+      viewAll: 'Ver Todos',
+      
+      // Post creation
+      content: 'Conteúdo',
+      media: 'Mídia',
+      platforms: 'Plataformas',
+      preview: 'Visualizar',
+      postNow: 'Publicar Agora',
+      saveAsDraft: 'Salvar como Rascunho',
+      schedulePost: 'Agendar Post',
+      requireApproval: 'Exigir aprovação antes de publicar',
+      
+      // Status
+      connected: 'Conectado',
+      pending: 'Pendente',
+      approved: 'Aprovado',
+      rejected: 'Rejeitado',
+      draft: 'Rascunho',
+      scheduled: 'Agendado',
+      published: 'Publicado',
+      
+      // Time
+      hoursAgo: 'há {{count}} horas',
+      minutesAgo: 'há {{count}} minutos',
+      
+      // Common
+      cancel: 'Cancelar',
+      save: 'Salvar',
+      delete: 'Excluir',
+      edit: 'Editar',
+      loading: 'Carregando...',
+      error: 'Erro',
+      success: 'Sucesso',
+    }
   }
 };
 

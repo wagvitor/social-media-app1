@@ -40,6 +40,8 @@ export default function Schedule() {
       facebook: "fab fa-facebook text-blue-600",
       linkedin: "fab fa-linkedin text-blue-600",
       instagram: "fab fa-instagram text-pink-500",
+      tiktok: "fab fa-tiktok text-black",
+      pinterest: "fab fa-pinterest text-red-600",
     };
     return iconMap[platform] || "fas fa-share";
   };

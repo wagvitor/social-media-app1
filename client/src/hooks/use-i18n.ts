@@ -16,6 +16,7 @@ export function useI18n() {
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     { code: 'ja', name: '日本語', flag: '🇯🇵' },
+    { code: 'pt-BR', name: 'Português (BR)', flag: '🇧🇷' },
   ];
 
   return {
